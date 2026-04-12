@@ -9,6 +9,9 @@ export type ToolItem = {
   short: string
   group: string
   accent: string
+  color: string
+  glow: string
+  modelPath?: string
 }
 
 export type FeaturedProject = {
