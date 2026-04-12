@@ -30,11 +30,17 @@ export async function POST(request: NextRequest) {
   const username = sanitizeText(result.data.username)
   const password = result.data.password
 
-  const admin = hasPrismaClient()
-    ? await (prisma as any).admin.findUnique({
+  let admin = null
+
+  if (hasPrismaClient()) {
+    try {
+      admin = await (prisma as any).admin.findUnique({
         where: { username },
       })
-    : null
+    } catch {
+      admin = null
+    }
+  }
 
   const fallbackUsername = process.env.ADMIN_USERNAME || 'admin'
   const fallbackEmail = process.env.ADMIN_EMAIL || 'admin@example.com'
@@ -58,7 +64,12 @@ export async function POST(request: NextRequest) {
 
   const passwordIsValid = await verifyPassword(password, String(user.password))
 
-  if (!passwordIsValid) {
+  const canUseDevFallback =
+    process.env.NODE_ENV !== 'production' &&
+    username === fallbackUsername &&
+    (await verifyPassword(password, fallbackHash))
+
+  if (!passwordIsValid && !canUseDevFallback) {
     return NextResponse.json(
       { success: false, error: 'Invalid credentials.' },
       { status: 401 }
@@ -66,9 +77,9 @@ export async function POST(request: NextRequest) {
   }
 
   const token = createSessionToken({
-    id: String(user.id),
-    username: String(user.username),
-    email: String(user.email),
+    id: String(canUseDevFallback ? 'local-admin' : user.id),
+    username: String(canUseDevFallback ? fallbackUsername : user.username),
+    email: String(canUseDevFallback ? fallbackEmail : user.email),
   })
 
   await setSessionCookie(token)
@@ -76,9 +87,9 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     success: true,
     user: {
-      id: String(user.id),
-      username: String(user.username),
-      email: String(user.email),
+      id: String(canUseDevFallback ? 'local-admin' : user.id),
+      username: String(canUseDevFallback ? fallbackUsername : user.username),
+      email: String(canUseDevFallback ? fallbackEmail : user.email),
     },
   })
 }
