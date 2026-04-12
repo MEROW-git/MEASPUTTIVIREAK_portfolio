@@ -6,6 +6,7 @@ import {
   PUBLIC_ADMIN_DASHBOARD_PATH,
   PUBLIC_ADMIN_LOGIN_PATH,
   PUBLIC_ADMIN_NEW_POST_PATH,
+  PUBLIC_ADMIN_SETTINGS_PATH,
 } from '@/lib/admin-route'
 import { getCurrentUserFromCookies } from '@/lib/auth'
 
@@ -39,6 +40,11 @@ export default async function AdminDashboardLayout({
           </Link>
           <Link href={PUBLIC_ADMIN_NEW_POST_PATH}>
             <Button className="rounded-full">New post</Button>
+          </Link>
+          <Link href={PUBLIC_ADMIN_SETTINGS_PATH}>
+            <Button variant="outline" className="rounded-full border-white/15 bg-transparent text-white hover:bg-white/5">
+              Security
+            </Button>
           </Link>
           <form action="/api/auth/logout" method="POST">
             <Button

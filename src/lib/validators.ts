@@ -5,6 +5,17 @@ export const loginSchema = z.object({
   password: z.string().min(1).max(100),
 })
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1).max(100),
+    newPassword: z.string().min(10).max(100),
+    confirmPassword: z.string().min(1).max(100),
+  })
+  .refine((value) => value.newPassword === value.confirmPassword, {
+    message: 'New password and confirmation do not match.',
+    path: ['confirmPassword'],
+  })
+
 export const journalSchema = z.object({
   title: z.string().min(3).max(160),
   slug: z.string().min(3).max(180).optional(),

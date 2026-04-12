@@ -15,10 +15,8 @@ A production-oriented personal portfolio built with Next.js, TypeScript, Tailwin
   - `/journal`
   - `/journal/[slug]`
 - Private journal CMS only:
-  - `/YOMAMA/login`
-  - `/YOMAMA/journal`
-  - `/YOMAMA/journal/new`
-  - `/YOMAMA/journal/[id]`
+  - protected journal management area
+  - create, edit, publish, unpublish, and security settings
 - API routes:
   - `/api/auth/login`
   - `/api/auth/logout`
@@ -125,7 +123,7 @@ npm run dev
 Open:
 
 - Public site: `http://localhost:3000`
-- Private login: `http://localhost:3000/YOMAMA/login`
+- Private CMS route: configured locally and kept unlisted
 
 ## Design Decisions
 
@@ -138,7 +136,7 @@ Open:
 ## Security Decisions
 
 - Admin authentication uses server-side credential checks and an HTTP-only cookie.
-- The private CMS route is exposed at `/YOMAMA` and the old `/admin` path is redirected away from public access.
+- The private CMS route is intentionally unlisted from public navigation.
 - Protected pages are guarded by middleware and server-side admin layout checks.
 - Protected APIs re-check authentication before returning or mutating data.
 - Passwords are hashed with bcrypt.
@@ -175,7 +173,7 @@ npx prisma db push
 npm run db:seed
 ```
 
-8. Open your private login at `/YOMAMA/login`.
+8. Open your private CMS route using the internal path you configured for the project.
 
 Recommended production values:
 
