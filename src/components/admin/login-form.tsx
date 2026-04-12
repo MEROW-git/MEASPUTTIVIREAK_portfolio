@@ -3,18 +3,19 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+import { PUBLIC_ADMIN_DASHBOARD_PATH } from '@/lib/admin-route'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('admin123')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const nextPath = searchParams.get('next') || '/admin/journal'
+  const nextPath = searchParams.get('next') || PUBLIC_ADMIN_DASHBOARD_PATH
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -43,7 +44,11 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-200">Username</label>
-        <Input value={username} onChange={(event) => setUsername(event.target.value)} />
+        <Input
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          autoComplete="username"
+        />
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-200">Password</label>
@@ -51,6 +56,7 @@ export function LoginForm() {
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
+          autoComplete="current-password"
         />
       </div>
       {error ? (

@@ -2,6 +2,11 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
+import {
+  PUBLIC_ADMIN_DASHBOARD_PATH,
+  PUBLIC_ADMIN_LOGIN_PATH,
+  PUBLIC_ADMIN_NEW_POST_PATH,
+} from '@/lib/admin-route'
 import { getCurrentUserFromCookies } from '@/lib/auth'
 
 export default async function AdminDashboardLayout({
@@ -12,7 +17,7 @@ export default async function AdminDashboardLayout({
   const user = await getCurrentUserFromCookies()
 
   if (!user) {
-    redirect('/admin/login')
+    redirect(PUBLIC_ADMIN_LOGIN_PATH)
   }
 
   return (
@@ -27,12 +32,12 @@ export default async function AdminDashboardLayout({
           <p className="mt-2 text-sm text-slate-500">Signed in as {user.username}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/admin/journal">
+          <Link href={PUBLIC_ADMIN_DASHBOARD_PATH}>
             <Button variant="outline" className="rounded-full border-white/15 bg-transparent text-white hover:bg-white/5">
               All posts
             </Button>
           </Link>
-          <Link href="/admin/journal/new">
+          <Link href={PUBLIC_ADMIN_NEW_POST_PATH}>
             <Button className="rounded-full">New post</Button>
           </Link>
           <form action="/api/auth/logout" method="POST">

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { PUBLIC_ADMIN_DASHBOARD_PATH } from '@/lib/admin-route'
 import type { JournalPost } from '@/types'
 
 type JournalFormProps = {
@@ -86,7 +87,7 @@ export function JournalForm({ mode, initialPost }: JournalFormProps) {
       return
     }
 
-    router.push('/admin/journal')
+    router.push(PUBLIC_ADMIN_DASHBOARD_PATH)
     router.refresh()
   }
 
@@ -216,7 +217,7 @@ export function JournalForm({ mode, initialPost }: JournalFormProps) {
             type="button"
             variant="outline"
             className="rounded-full border-white/15 bg-transparent text-white hover:bg-white/5"
-            onClick={() => router.push('/admin/journal')}
+            onClick={() => router.push(PUBLIC_ADMIN_DASHBOARD_PATH)}
           >
             Cancel
           </Button>

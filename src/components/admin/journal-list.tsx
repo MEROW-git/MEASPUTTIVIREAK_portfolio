@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/format'
+import { PUBLIC_ADMIN_DASHBOARD_PATH } from '@/lib/admin-route'
 import type { JournalPost } from '@/types'
 
 type JournalListProps = {
@@ -80,7 +81,7 @@ export function JournalList({ posts }: JournalListProps) {
                 View
               </Button>
             </Link>
-            <Link href={`/admin/journal/${post.id}`}>
+            <Link href={`${PUBLIC_ADMIN_DASHBOARD_PATH}/${post.id}`}>
               <Button variant="outline" className="rounded-full border-white/15 bg-transparent text-white hover:bg-white/5">
                 Edit
               </Button>

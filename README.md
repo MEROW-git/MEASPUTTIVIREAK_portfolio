@@ -14,11 +14,11 @@ A production-oriented personal portfolio built with Next.js, TypeScript, Tailwin
 - Public journal:
   - `/journal`
   - `/journal/[slug]`
-- Admin journal CMS only:
-  - `/admin/login`
-  - `/admin/journal`
-  - `/admin/journal/new`
-  - `/admin/journal/[id]`
+- Private journal CMS only:
+  - `/YOMAMA/login`
+  - `/YOMAMA/journal`
+  - `/YOMAMA/journal/new`
+  - `/YOMAMA/journal/[id]`
 - API routes:
   - `/api/auth/login`
   - `/api/auth/logout`
@@ -125,12 +125,7 @@ npm run dev
 Open:
 
 - Public site: `http://localhost:3000`
-- Admin login: `http://localhost:3000/admin/login`
-
-Default local admin credentials:
-
-- Username: `admin`
-- Password: `admin123`
+- Private login: `http://localhost:3000/YOMAMA/login`
 
 ## Design Decisions
 
@@ -143,6 +138,7 @@ Default local admin credentials:
 ## Security Decisions
 
 - Admin authentication uses server-side credential checks and an HTTP-only cookie.
+- The private CMS route is exposed at `/YOMAMA` and the old `/admin` path is redirected away from public access.
 - Protected pages are guarded by middleware and server-side admin layout checks.
 - Protected APIs re-check authentication before returning or mutating data.
 - Passwords are hashed with bcrypt.
@@ -154,3 +150,36 @@ Default local admin credentials:
 
 - The app includes a fallback in-memory journal store when Prisma is not available yet, which helps the UI boot during early local setup.
 - For production, complete Prisma setup and use a real PostgreSQL database.
+- The current local upload route writes to `public/uploads`; for Vercel production, use external object storage such as Vercel Blob or supply remote image URLs instead of relying on local disk persistence.
+
+## Deploy To Vercel
+
+1. Push this repository to GitHub.
+2. Import the repository into Vercel.
+3. Create a PostgreSQL database using a Vercel Marketplace provider such as Neon or Supabase.
+4. Add these environment variables in Vercel Project Settings:
+   - `DATABASE_URL`
+   - `JWT_SECRET`
+   - `ADMIN_USERNAME`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `ADMIN_PASSWORD_HASH`
+   - `NEXT_PUBLIC_APP_URL`
+   - `NODE_ENV=production`
+5. Generate a bcrypt hash for your admin password and place it in `ADMIN_PASSWORD_HASH`.
+6. Set `NEXT_PUBLIC_APP_URL` to your production domain, for example `https://your-site.vercel.app`.
+7. After the first deploy, run:
+
+```bash
+npx prisma db push
+npm run db:seed
+```
+
+8. Open your private login at `/YOMAMA/login`.
+
+Recommended production values:
+
+- Use a long random `JWT_SECRET`.
+- Do not commit real credentials into `.env.example`.
+- Keep the admin route private and unlinked.
+- Prefer remote image URLs or Vercel Blob for cover images on production.

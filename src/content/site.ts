@@ -102,8 +102,8 @@ export const featuredProject: FeaturedProject = {
 }
 
 export const socialLinks: SiteLink[] = [
-  { label: 'Email', href: 'mailto:puttivireak@example.com' },
-  { label: 'GitHub', href: 'https://github.com/' },
+  { label: 'Email', href: 'mailto:puttyvireakmeas@gmial.com' },
+  { label: 'GitHub', href: 'https://github.com/MEROW-git' },
   { label: 'Telegram', href: 'https://t.me/' },
 ]
 

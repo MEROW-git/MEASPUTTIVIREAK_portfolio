@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { PUBLIC_ADMIN_DASHBOARD_PATH } from '@/lib/admin-route'
 import { createSessionToken, setSessionCookie, verifyPassword } from '@/lib/auth'
 import prisma, { hasPrismaClient } from '@/lib/prisma'
 import { loginRateLimit, sanitizeText } from '@/lib/security'
@@ -44,9 +45,7 @@ export async function POST(request: NextRequest) {
 
   const fallbackUsername = process.env.ADMIN_USERNAME || 'admin'
   const fallbackEmail = process.env.ADMIN_EMAIL || 'admin@example.com'
-  const fallbackHash =
-    process.env.ADMIN_PASSWORD_HASH ||
-    '$2a$12$I28mmwapYRLepyyNFZrVIe.FZ54t0onrx/Rpy0n3PmTWEPY6bTVEK'
+  const fallbackHash = process.env.ADMIN_PASSWORD_HASH || ''
 
   const user = admin || {
     id: 'local-admin',
@@ -62,10 +61,13 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const passwordIsValid = await verifyPassword(password, String(user.password))
+  const passwordIsValid = user.password
+    ? await verifyPassword(password, String(user.password))
+    : false
 
   const canUseDevFallback =
     process.env.NODE_ENV !== 'production' &&
+    Boolean(fallbackHash) &&
     username === fallbackUsername &&
     (await verifyPassword(password, fallbackHash))
 
@@ -86,6 +88,7 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     success: true,
+    nextPath: PUBLIC_ADMIN_DASHBOARD_PATH,
     user: {
       id: String(canUseDevFallback ? 'local-admin' : user.id),
       username: String(canUseDevFallback ? fallbackUsername : user.username),

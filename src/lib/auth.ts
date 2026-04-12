@@ -6,7 +6,18 @@ import type { NextRequest } from 'next/server'
 import prisma from '@/lib/prisma'
 
 const AUTH_COOKIE_NAME = 'portfolio_admin'
-const defaultJwtSecret = process.env.JWT_SECRET || 'dev-secret-change-me'
+
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET
+
+  if (secret) return secret
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET is required in production.')
+  }
+
+  return 'dev-secret-change-me'
+}
 
 export type SessionUser = {
   id: string
@@ -25,23 +36,24 @@ export async function verifyPassword(password: string, hashedPassword: string) {
 }
 
 export function createSessionToken(user: SessionUser) {
-  return jwt.sign(user, defaultJwtSecret, {
+  return jwt.sign(user, getJwtSecret(), {
     expiresIn: '7d',
   })
 }
 
 export function verifySessionToken(token: string) {
-  return jwt.verify(token, defaultJwtSecret) as TokenPayload
+  return jwt.verify(token, getJwtSecret()) as TokenPayload
 }
 
 export async function setSessionCookie(token: string) {
   const store = await cookies()
   store.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 60 * 60 * 24 * 7,
+    priority: 'high',
   })
 }
 

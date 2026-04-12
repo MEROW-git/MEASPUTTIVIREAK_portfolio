@@ -45,12 +45,6 @@ export default function RootLayout({
                 <Link href="/journal" className="hover:text-white">
                   Journal
                 </Link>
-                <Link
-                  href="/admin/journal"
-                  className="rounded-full border border-cyan-400/30 px-4 py-2 text-cyan-200 hover:border-cyan-300 hover:text-white"
-                >
-                  Admin
-                </Link>
               </nav>
             </div>
           </header>
