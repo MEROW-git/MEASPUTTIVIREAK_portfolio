@@ -73,7 +73,7 @@ function createRecord(input: JournalInput, existing?: JournalPost): JournalPost 
   }
 }
 
-export async function getPublishedJournalPosts() {
+export async function getPublishedJournalPosts(): Promise<JournalPost[]> {
   if (hasPrismaClient()) {
     const rows = await (prisma as any).journalPost.findMany({
       where: { isPublished: true },
@@ -86,7 +86,7 @@ export async function getPublishedJournalPosts() {
   return sortByDate(memoryJournalStore.filter((post) => post.isPublished))
 }
 
-export async function getAllJournalPosts() {
+export async function getAllJournalPosts(): Promise<JournalPost[]> {
   if (hasPrismaClient()) {
     const rows = await (prisma as any).journalPost.findMany({
       orderBy: { updatedAt: 'desc' },
@@ -98,7 +98,10 @@ export async function getAllJournalPosts() {
   return sortByDate(memoryJournalStore)
 }
 
-export async function getJournalPostBySlug(slug: string, includeDraft = false) {
+export async function getJournalPostBySlug(
+  slug: string,
+  includeDraft = false
+): Promise<JournalPost | null> {
   if (hasPrismaClient()) {
     const row = await (prisma as any).journalPost.findUnique({
       where: { slug },
@@ -115,7 +118,7 @@ export async function getJournalPostBySlug(slug: string, includeDraft = false) {
   return post
 }
 
-export async function getJournalPostById(id: string) {
+export async function getJournalPostById(id: string): Promise<JournalPost | null> {
   if (hasPrismaClient()) {
     const row = await (prisma as any).journalPost.findUnique({
       where: { id },
@@ -127,7 +130,7 @@ export async function getJournalPostById(id: string) {
   return memoryJournalStore.find((post) => post.id === id) || null
 }
 
-export async function createJournalPost(input: JournalInput) {
+export async function createJournalPost(input: JournalInput): Promise<JournalPost> {
   const record = createRecord(input)
 
   if (hasPrismaClient()) {
@@ -142,7 +145,10 @@ export async function createJournalPost(input: JournalInput) {
   return record
 }
 
-export async function updateJournalPost(id: string, input: JournalInput) {
+export async function updateJournalPost(
+  id: string,
+  input: JournalInput
+): Promise<JournalPost> {
   const existing = await getJournalPostById(id)
 
   if (!existing) {
