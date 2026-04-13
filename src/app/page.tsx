@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Database, GraduationCap, Layers3, Workflow } from 'lucide-react'
 
-import { featuredProject, siteProfile, skills, socialLinks, tools } from '@/content/site'
+import { featuredProjects, siteProfile, skills, socialLinks, tools } from '@/content/site'
 import { formatDate } from '@/lib/format'
 import { getPublishedJournalPosts } from '@/lib/journal'
 import { HeroScene } from '@/components/hero-scene'
@@ -129,54 +129,59 @@ export default async function HomePage() {
       </section>
 
       <section id="projects" className="shell py-12">
-        <div className="panel overflow-hidden">
-          <div className="grid gap-0 lg:grid-cols-[1fr_0.9fr]">
-            <div className="border-b border-white/10 p-8 lg:border-b-0 lg:border-r">
-              <p className="eyebrow">Featured Project</p>
-              <h2 className="mt-4 text-3xl font-semibold text-white">
-                {featuredProject.title}
-              </h2>
-              <p className="mt-4 text-lg leading-8 text-slate-300">
-                {featuredProject.description}
-              </p>
-              <p className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm leading-7 text-cyan-50">
-                {featuredProject.outcome}
-              </p>
-            </div>
-            <div className="p-8">
-              <div className="grid gap-4">
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
-                  <p className="text-sm text-slate-400">Built for</p>
-                  <p className="mt-2 text-lg font-medium text-white">
-                    Water business in {featuredProject.location}
+        <div className="space-y-6">
+          {featuredProjects.map((project, index) => (
+            <div key={project.title} className="panel overflow-hidden">
+              <div className="grid gap-0 lg:grid-cols-[1fr_0.9fr]">
+                <div className="border-b border-white/10 p-8 lg:border-b-0 lg:border-r">
+                  <p className="eyebrow">{index === 0 ? 'Featured Project' : 'Project Collaboration'}</p>
+                  <h2 className="mt-4 text-3xl font-semibold text-white">
+                    {project.title}
+                  </h2>
+                  <p className="mt-4 text-lg leading-8 text-slate-300">
+                    {project.description}
+                  </p>
+                  <p className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm leading-7 text-cyan-50">
+                    {project.outcome}
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
-                  <p className="text-sm text-slate-400">Stack</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {featuredProject.stack.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-white/10 px-3 py-1 text-sm text-slate-200"
-                      >
-                        {item}
-                      </span>
-                    ))}
+                <div className="p-8">
+                  <div className="grid gap-4">
+                    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                      <p className="text-sm text-slate-400">Built for</p>
+                      <p className="mt-2 text-lg font-medium text-white">
+                        {project.builtFor} in {project.location}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                      <p className="text-sm text-slate-400">Stack</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {project.stack.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-white/10 px-3 py-1 text-sm text-slate-200"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                      <p className="flex items-center gap-2 text-sm text-slate-400">
+                        <Layers3 className="h-4 w-4" />
+                        {project.collaborators?.length ? 'Worked with' : 'Easy to update'}
+                      </p>
+                      <p className="mt-2 text-sm leading-7 text-slate-300">
+                        {project.collaborators?.length
+                          ? project.collaborators.join(', ')
+                          : 'The featured project content is isolated in a single content source, so adding more projects later is straightforward.'}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
-                  <p className="flex items-center gap-2 text-sm text-slate-400">
-                    <Layers3 className="h-4 w-4" />
-                    Easy to update
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">
-                    The featured project content is isolated in a single content source, so
-                    adding more projects later is straightforward.
-                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 

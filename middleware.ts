@@ -27,6 +27,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  if (pathname === PUBLIC_ADMIN_BASE_PATH) {
+    return NextResponse.redirect(new URL(PUBLIC_ADMIN_LOGIN_PATH, request.url))
+  }
+
   const token = request.cookies.get(getAuthCookieName())?.value
   const isAuthenticated = Boolean(token)
 
@@ -57,5 +61,5 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 export const config = {
-  matcher: ['/admin/:path*', '/YOMAMA/:path*', '/api/admin/:path*', '/api/upload/:path*'],
+  matcher: ['/admin', '/admin/:path*', '/YOMAMA', '/YOMAMA/:path*', '/api/admin/:path*', '/api/upload/:path*'],
 }

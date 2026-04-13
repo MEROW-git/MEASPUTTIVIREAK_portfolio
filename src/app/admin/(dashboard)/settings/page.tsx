@@ -1,10 +1,13 @@
+import { getCurrentUserFromCookies } from '@/lib/auth'
 import { ChangePasswordForm } from '@/components/admin/change-password-form'
 
 export const metadata = {
   title: 'Security Settings',
 }
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
+  const user = await getCurrentUserFromCookies()
+
   return (
     <section className="space-y-5">
       <div>
@@ -15,8 +18,23 @@ export default function AdminSettingsPage() {
           password before a new one can be saved.
         </p>
       </div>
-      <div className="panel max-w-2xl p-6">
-        <ChangePasswordForm />
+      <div className="grid gap-6 xl:grid-cols-[0.7fr_1.3fr]">
+        <div className="panel p-6">
+          <p className="text-lg font-semibold text-white">Account</p>
+          <div className="mt-5 space-y-4">
+            <div>
+              <p className="text-sm text-slate-400">Username</p>
+              <p className="mt-1 text-white">{user?.username || 'Unknown user'}</p>
+            </div>
+            <div>
+              <p className="text-sm text-slate-400">Email</p>
+              <p className="mt-1 break-all text-white">{user?.email || 'Unknown email'}</p>
+            </div>
+          </div>
+        </div>
+        <div className="panel max-w-2xl p-6">
+          <ChangePasswordForm />
+        </div>
       </div>
     </section>
   )

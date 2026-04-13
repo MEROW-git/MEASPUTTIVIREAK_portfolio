@@ -17,9 +17,11 @@ export type ToolItem = {
 export type FeaturedProject = {
   title: string
   location: string
+  builtFor: string
   stack: string[]
   description: string
   outcome: string
+  collaborators?: string[]
 }
 
 export type SiteLink = {

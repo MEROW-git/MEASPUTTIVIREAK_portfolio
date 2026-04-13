@@ -91,15 +91,29 @@ export const tools: ToolItem[] = [
   { name: 'SQL', short: 'SQL', group: 'Database', accent: 'from-cyan-400/25 to-sky-300/15', color: '#06b6d4', glow: '#67e8f9' },
 ]
 
-export const featuredProject: FeaturedProject = {
-  title: 'Water Billing System',
-  location: 'Kompong Cham Province',
-  stack: ['Microsoft Access', 'VBA'],
-  description:
-    'A billing and operational system developed for a water business to support daily administrative work, structured billing processes, and more reliable record management.',
-  outcome:
-    'The system was successfully implemented and used in real work, which made it one of the most meaningful examples of practical system development in my experience so far.',
-}
+export const featuredProjects: FeaturedProject[] = [
+  {
+    title: 'Water Billing System',
+    location: 'Kompong Cham Province',
+    builtFor: 'Water business',
+    stack: ['Microsoft Access', 'VBA'],
+    description:
+      'A billing and operational system developed for a water business to support daily administrative work, structured billing processes, and more reliable record management.',
+    outcome:
+      'The system was successfully implemented and used in real work, which made it one of the most meaningful examples of practical system development in my experience so far.',
+  },
+  {
+    title: 'School Library Management System',
+    location: 'School library',
+    builtFor: 'Library operations and student borrowing',
+    collaborators: ['Som Soratim'],
+    stack: ['Microsoft Access', 'VBA', 'Database Design'],
+    description:
+      'A school library system I worked on with my friend Som Soratim. It handled borrowing books, library cards, student credit scores, late-return fees, and other everyday library tasks.',
+    outcome:
+      'The project helped us design a more organized workflow for borrowing, book tracking, borrower records, fees, and library management.',
+  },
+]
 
 export const socialLinks: SiteLink[] = [
   { label: 'Email', href: 'mailto:puttyvireakmeas@gmial.com' },
