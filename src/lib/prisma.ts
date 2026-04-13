@@ -14,7 +14,7 @@ function createPrismaClient(): PrismaClientLike {
       global.__portfolioPrisma = new PrismaClient()
     }
 
-    return global.__portfolioPrisma
+    return global.__portfolioPrisma || null
   } catch {
     return null
   }
