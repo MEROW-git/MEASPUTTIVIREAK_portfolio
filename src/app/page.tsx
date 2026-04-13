@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/format'
 import { getPublishedJournalPosts } from '@/lib/journal'
 import { HeroScene } from '@/components/hero-scene'
 import { ToolStack } from '@/components/tool-stack'
+import { CvPreview } from '@/components/cv-preview'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
@@ -92,6 +93,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <CvPreview />
 
       <section id="skills" className="shell py-12">
         <div className="flex items-end justify-between gap-6">
