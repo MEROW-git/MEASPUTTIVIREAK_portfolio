@@ -46,17 +46,19 @@ export function JournalEditor({ value, onChange }: JournalEditorProps) {
   if (!editor) return null
 
   function addLink() {
-    if (!editor) return
+    const currentEditor = editor
+    if (!currentEditor) return
     const url = window.prompt('Enter a URL')
     if (!url) return
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    currentEditor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }
 
   function addImage() {
-    if (!editor) return
+    const currentEditor = editor
+    if (!currentEditor) return
     const url = window.prompt('Paste an image URL')
     if (!url) return
-    editor.chain().focus().setImage({ src: url, alt: 'Journal image' }).run()
+    currentEditor.chain().focus().setImage({ src: url, alt: 'Journal image' }).run()
   }
 
   return (
