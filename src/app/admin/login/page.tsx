@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import { LoginForm } from '@/components/admin/login-form'
 
 export const metadata = {
@@ -29,7 +31,9 @@ export default function AdminLoginPage() {
             protection.
           </p>
           <div className="mt-8">
-            <LoginForm />
+            <Suspense fallback={<div className="text-sm text-slate-400">Loading sign in...</div>}>
+              <LoginForm />
+            </Suspense>
           </div>
         </section>
       </div>
